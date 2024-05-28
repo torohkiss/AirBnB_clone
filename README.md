@@ -1,1 +1,1 @@
-AirBnB clone project
+The Airbnb project
