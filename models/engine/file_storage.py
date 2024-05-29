@@ -8,8 +8,9 @@ import json
 class FileStorage:
     """The file storage class"""
 
-    self.__file_path = "file.json"
-    self.__objects = {}
+    def __init__(self):
+        self.__file_path = "file.json"
+        self.__objects = {}
 
     def all(self):
         return self.__objects
@@ -20,11 +21,11 @@ class FileStorage:
             self.__objects[objkey] = obj
 
     def save(self):
-        newobj = {}
-        for key, value in self.__objects.items():
-            newobj[key] = value.to_dict()
+        #newobj = {}
+        #for key, value in self.__objects.items():
+        #    newobj[key] = value.to_dict()
         with open(self.__file_path, 'w') as the_file:
-            json.dump(newobj, the_file)
+            json.dump(self.__objects, the_file)
 
     def reload(self):
         try:
