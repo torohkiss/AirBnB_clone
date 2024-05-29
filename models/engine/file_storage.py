@@ -3,6 +3,7 @@
 
 import models
 import json
+from os.path import exists
 
 
 class FileStorage:
@@ -25,13 +26,11 @@ class FileStorage:
             json.dump(self.__objects, the_file)
 
     def reload(self):
-        with open(self.__file_path, "r", encoding="utf-8") as the_file:
-            self.__objects = json.load(the_file)
-        objCollection = []
-        newData = self.__objects.copy()
-        for key in newData:
-            className, id = key.split('.')
-            value = self.__objects[key]
-
-        objCollection.append(self.classes[className](**value))
-        return objCollection
+        if exists(self.__file_path):
+            with open(self.__file_path, "r") as file:
+                obj_dict = json.load(file)
+            for key, value in obj_dict.items():
+                class_name, obj_id = key.split(".")
+                module = __import__(f"models.{class_name.lower()}", fromlist=[class_name])
+                cls = getattr(module, class_name)
+                self.__objects[key] = cls(**value)
