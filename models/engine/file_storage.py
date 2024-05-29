@@ -8,9 +8,8 @@ import json
 class FileStorage:
     """The file storage class"""
 
-    def __init__(self):
-        self.__file_path = "file.json"
-        self.__objects = {}
+    self.__file_path = "file.json"
+    self.__objects = {}
 
     def all(self):
         return self.__objects
