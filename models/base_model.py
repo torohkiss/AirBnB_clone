@@ -32,6 +32,7 @@ class BaseModel:
 
     def save(self):
         self.updated_at = datetime.datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         adict = self.__dict__.copy()
