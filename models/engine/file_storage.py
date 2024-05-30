@@ -8,10 +8,8 @@ from os.path import exists
 
 class FileStorage:
     """The file storage class"""
-
-    def __init__(self):
-        self.__file_path = "file.json"
-        self.__objects = {}
+    self.__file_path = "file.json"
+    self.__objects = {}
 
     def all(self):
         return self.__objects
@@ -22,15 +20,15 @@ class FileStorage:
             self.__objects[objkey] = obj
 
     def save(self):
-        with open(self.__file_path, 'w') as the_file:
-            json.dump(self.__objects, the_file)
+        with open(self.__file_path, 'w') as f:
+            json.dump({key: obj.to_dict() for key, obj in self.__objects.items()}, f)
 
     def reload(self):
-        if exists(self.__file_path):
-            with open(self.__file_path, "r") as file:
-                obj_dict = json.load(file)
-            for key, value in obj_dict.items():
-                class_name, obj_id = key.split(".")
-                module = __import__(f"models.{class_name.lower()}", fromlist=[class_name])
-                cls = getattr(module, class_name)
-                self.__objects[key] = cls(**value)
+        try:
+            with open(self.__file_path, "r") as f:
+                objs = json.load(f)
+                for key, value in objs.items():
+                    class_name, obj_id = key.split(".")
+                    self.__objects[key] = eval(f"{class_name}(**value)")
+        except FileNotFoundError:
+            pass
