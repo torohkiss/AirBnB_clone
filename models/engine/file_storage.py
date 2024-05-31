@@ -27,6 +27,7 @@ class FileStorage:
             json.dump(obj_dict, f)
 
     def reload(self):
+        """
         try:
             with open(self.__file_path, "r") as f:
                 objs = json.load(f)
@@ -35,3 +36,12 @@ class FileStorage:
                     self.__objects[key] = eval(f"{class_name}(**value)")
         except FileNotFoundError:
             pass
+            """
+            try:
+                with open(self.__file_path, "r", encoding="utf-8") as f:
+                    obj_dict = json.load(f)
+                for key, value in obj_dict.items():
+                    cls_name = classes[(value['__class__'])](**value)
+                    self.__objects[key] = cls_name
+            except FileNotFoundError:
+                pass
