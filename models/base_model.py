@@ -36,7 +36,8 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        adict = self.__dict__.copy()
+        adict = {key: value for key, value in self.__dict__.items()}
+        #adict = self.__dict__.copy()
         adict["__class__"] = self.__class__.__name__
         adict["created_at"] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
         adict["updated_at"] = self.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
