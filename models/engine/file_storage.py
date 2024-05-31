@@ -3,7 +3,7 @@
 
 import models
 import json
-from os.path import exists
+import os.path
 
 
 class FileStorage:
@@ -27,21 +27,12 @@ class FileStorage:
             json.dump(obj_dict, f)
 
     def reload(self):
-        """
-        try:
+        if os.path.isfile(self.__file_path):
             with open(self.__file_path, "r") as f:
-                objs = json.load(f)
-                for key, value in objs.items():
-                    class_name, obj_id = key.split(".")
-                    self.__objects[key] = eval(f"{class_name}(**value)")
-        except FileNotFoundError:
-            pass
-            """
-            try:
-                with open(self.__file_path, "r", encoding="utf-8") as f:
-                    obj_dict = json.load(f)
-                for key, value in obj_dict.items():
-                    cls_name = classes[(value['__class__'])](**value)
-                    self.__objects[key] = cls_name
-            except FileNotFoundError:
-                pass
+                objdicts = json.load(f)
+
+            my_obj = {}
+            for key, value in objdicts.items():
+                cls_name = value['__class__']
+                my_obj[key]= eval(cls_name)(**value)
+            self.__objects.update(my_obj)
