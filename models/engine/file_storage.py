@@ -8,8 +8,8 @@ from os.path import exists
 
 class FileStorage:
     """The file storage class"""
-    self.__file_path = "file.json"
-    self.__objects = {}
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
         return self.__objects
@@ -21,7 +21,7 @@ class FileStorage:
 
     def save(self):
         obj_dict = {}
-        for key, value in self.__objects.items():
+        for keyi, value in self.__objects.items():
             obj_dict[key] = value.to_dict()
         with open(self.__file_path, 'w') as f:
             json.dump(obj_dict, f)
