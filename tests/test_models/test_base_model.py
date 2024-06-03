@@ -24,6 +24,43 @@ class TestBestModel(unittest.TestCase):
         self.assertIsInstance(the_id, str)
         self.assertTrue(len(the_id), 36)
 
+    def test_instance_creation(self):
+        self.assertIsInstance(self.base1, BaseModel)
+        self.assertIsInstance(self.base1.id, str)
+        self.assertIsInstance(self.base1.created_at, datetime)
+        self.assertIsInstance(self.base1.updated_at, datetime)
+
+    def test_string_representation(self):
+        self.base1.name = "My First Model"
+        self.base1.my_number = 89
+        str_representation = str(self.base1)
+        self.assertIn(self.base1.id, str_representation)
+        self.assertIn("name", str_representation)
+        self.assertIn("my_number", str_representation)
+
+    def test_save(self):
+        created_at = self.base1.created_at
+        updated_at = self.base1.updated_at
+        self.base1.save()
+        self.assertGreater(self.base1.updated_at, updated_at)
+        self.assertEqual(self.base1.created_at, created_at)
+
+    def test_to_dict_method(self):
+        self.base1.name = "My First Model"
+        self.base1.my_number = 89
+        base1__json = self.base1.to_dict()
+        self.assertIsInstance(base1__json, dict)
+        self.assertIn("__class__", base1__json)
+        self.assertEqual(base1__json["__class__"], 'BaseModel')
+        self.assertIn("id", base1__json)
+        self.assertIn("created_at", base1__json)
+        self.assertIn("updated_at", base1__json)
+        self.assertEqual(base1__json["created_at"], self.base1.created_at.isoformat())
+        self.assertEqual(base1__json["updated_at"], self.base1.updated_at.isoformat())
+
+
+        
+
 
 
 

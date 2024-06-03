@@ -30,12 +30,12 @@ class BaseModel:
 
     def __str__(self):
         """to string"""
-        print(f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
         """save method"""
         self.updated_at = datetime.now()
-        models.storage.save()
+        #models.storage.save()
 
     def to_dict(self):
         """to dict method"""
