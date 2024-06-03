@@ -63,6 +63,21 @@ class TestBestModel(unittest.TestCase):
         self.assertEqual(base1__json["created_at"], self.base1.created_at.isoformat())
         self.assertEqual(base1__json["updated_at"], self.base1.updated_at.isoformat())
 
+    def test_from_dict(self):
+        """my_model_json = self.base1.to_dict()
+        new_base1 = BaseModel()
+        for key, value in my_model_json.items():
+            setattr(new_base1, key, value)
+        """
+        new_base1 = BaseModel(**self.base1.to_dict())
+        self.base1.name = "My First Model"
+        self.base1.my_number = 89
+        self.assertIsInstance(new_base1, BaseModel)
+        self.assertEqual(new_base1.id, self.base1.id)
+        #self.assertEqual(new_base1.name, "My_First_Model")
+        #self.assertEqual(new_base1.my_number, 89)
+        self.assertIsInstance(new_base1.created_at, datetime)
+        self.assertIsInstance(new_base1.updated_at, datetime)
 
         
 

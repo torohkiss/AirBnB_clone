@@ -11,7 +11,8 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """initializing the base model class"""
         if kwargs:
-            for key, value in kwargs:
+            #for key, value in kwargs:
+            for key, value in kwargs.items():
                 if key == "created_at":
                     self.created_at = datetime.strptime(value,
                                                         '%Y-%m-%dT%H:%M:%S.%f')
@@ -40,6 +41,7 @@ class BaseModel:
     def to_dict(self):
         """to dict method"""
         adict = self.__dict__.copy()
+        #adict["__class__"] = self.__class__
         adict["__class__"] = self.__class__.__name__
         adict["created_at"] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
         adict["updated_at"] = self.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
