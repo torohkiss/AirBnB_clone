@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """File storage class"""
 
-#import models
 from models.base_model import BaseModel
 import json
 import os.path
@@ -9,7 +8,7 @@ import os.path
 
 class FileStorage:
     """The file storage class"""
-    
+
     __file_path = "file.json"
     __objects = {}
 
@@ -33,16 +32,7 @@ class FileStorage:
             json.dump(obj_dict, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects
-        if os.path.isfile(self.__file_path):
-            with open(self.__file_path, encoding="utf-8",  mode="r") as f:
-                objdicts = json.load(f)
-
-            my_obj = {}
-            for key, value in objdicts.items():
-                cls_name = value['__class__']
-                my_obj[key]= eval(cls_name)(**value)
-            self.__objects.update(my_obj)"""
+        """Deserializes the JSON file to __object"""
         try:
             with open(self.__file_path, encoding="utf-8",  mode="r") as f:
                 obj_dict = json.load(f)
