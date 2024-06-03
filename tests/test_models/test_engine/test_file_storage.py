@@ -8,6 +8,7 @@ from models.base_model import BaseModel
 import os
 import json
 
+
 class TestFilestorage(unittest.TestCase):
     """The file storage class tests"""
 
@@ -28,7 +29,6 @@ class TestFilestorage(unittest.TestCase):
         """testing the all method"""
         all_objs = storage.all()
         self.assertEqual(type(all_objs), dict)
-        #self.assertEqual(len(all_objs), 0)
 
     def test_new(self):
         """testing the new method"""
