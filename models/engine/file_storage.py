@@ -12,6 +12,7 @@ class FileStorage:
 
     __our_classes = {
             "BaseModel": BaseModel,
+            "User": User,
             }
 
     def all(self):
