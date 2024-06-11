@@ -5,25 +5,64 @@ from models.base_model import BaseModel
 import json
 import os.path
 
-
 class FileStorage:
-    """The file storage class"""
+    __file_path = "file.json"
+    __objects = {}
+
+    __our_classes = {
+            "BaseModel": BaseModel,
+            }
+
+    def all(self):
+        return self.__objects
+
+    def new(self, obj):
+        class_name = obj.__class__.__name__
+        instance_id = obj.id
+
+        key = f"{class_name}.{instance_id}"
+        self.__objects[key] = obj
+
+    def save(self):
+        temp_dict = {}
+
+        for key, value in self.__objects.items():
+            temp_dict[key] = value.to_dict()
+
+        with open(self.__file_path, encoding='utf-8', mode="w") as f:
+            json.dump(temp_dict, f, indent=2)
+
+    def reload(self):
+        try:
+            with open(self.__file_path, encoding='utf-8', mode="r") as f:
+                my_obj = json.load(f)
+                
+            for key, value in my_obj.items():
+                class_name = value['__class__']
+                #self.__objects[key] = globals()[class_name](**value)
+                self.__objects[key] = self.__our_classes[class_name](**value)
+                
+        except FileNotFoundError:
+            pass
+
+
+        
+
+"""
+class FileStorage:
 
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """returns the dictionary obj"""
         return self.__objects
 
     def new(self, obj):
-        """Sets in __objects the obj with key <obj class name>.id"""
         if obj:
             objkey = f'{obj.__class__.__name__}.{obj.id}'
             self.__objects[objkey] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file (path: __file_path)"""
         obj_dict = {}
 
         for key, value in self.__objects.items():
@@ -32,7 +71,6 @@ class FileStorage:
             json.dump(obj_dict, f)
 
     def reload(self):
-        """Deserializes the JSON file to __object"""
         try:
             with open(self.__file_path, encoding="utf-8",  mode="r") as f:
                 obj_dict = json.load(f)
@@ -41,3 +79,4 @@ class FileStorage:
                     self.__objects[key] = eval(f"{class_name}(**value)")
         except FileNotFoundError:
             pass
+        """
