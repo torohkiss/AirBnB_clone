@@ -3,7 +3,7 @@
 import cmd
 from models.__init__ import storage
 from models.base_model import BaseModel
-#from models.user import User
+from models.user import User
 #from models.state import State
 #from models.city import City
 #from models.amenity import Amenity
@@ -16,7 +16,7 @@ import re
 class HBNBCommand(cmd.Cmd):
     """the HBNBCommand class set up"""
 
-    classes = {"BaseModel"}
+    classes = {"BaseModel", "User}
 
     prompt = "(hbnb) "
 
