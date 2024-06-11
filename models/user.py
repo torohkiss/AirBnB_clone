@@ -3,6 +3,7 @@
 import models
 from models.base_model import BaseModel
 
+
 class User(BaseModel):
     """The user class defined"""
 
