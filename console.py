@@ -16,7 +16,7 @@ import re
 class HBNBCommand(cmd.Cmd):
     """the HBNBCommand class set up"""
 
-    classes = {"BaseModel", "User}
+    classes = {"BaseModel", "User"}
 
     prompt = "(hbnb) "
 
