@@ -115,7 +115,75 @@ class HBNBCommand(cmd.Cmd):
         if key not in storage.all().keys():
             print("** no instance found **")
             return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+        try:
+            if isinstance(eval(args[3]), int):
+                args[3] = int(args[3])
+            elif isinstance(eval(args[3]), float):
+                args[3] = float(args[3])
+        except NameError:
+            args[3] = args[3]
 
+        obj = storage.all()[key]
+        setattr(obj, args[2], args[3])
+        storage.all()[key].save()
+
+    def do_count(self, line):
+        """Count all the instances of a class"""
+        if line not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        print(len(storage.all().keys()))
+
+    def default(self, line):
+        """the default method defined"""
+        if "." not in line:
+            print("*** Unknown syntax: {}".format(line))
+            return
+        try:
+            args = line.split('.')
+            arg = args[0]
+            cmd = args[1].replace('(', '').replace(')', '')
+            if cmd == 'all':
+                HBNBCommand.do_all(self, arg)
+            elif cmd == 'count':
+                HBNBCommand.do_count(self, arg)
+            elif 'show' in cmd:
+                cmd = cmd[4:].replace('"', '').replace("'", '')
+                arg = arg + ' ' + cmd
+                HBNBCommand.do_show(self, arg)
+            elif 'destroy' in cmd:
+                cmd = cmd[7:].replace('"', '').replace("'", '')
+                arg = arg + ' ' + cmd
+                HBNBCommand.do_destroy(self, arg)
+            elif 'update' in cmd:
+                id_match = re.search(r"\"(.*?)\"", cmd)
+                id = id_match.group(1)
+
+                if "{" in cmd:
+                    d_match = re.search(r"\{(.*?)\}", cmd)
+                    d_cont = d_match.group(1).replace('"', '').replace("'", "")
+
+                    d_cont_list = d_cont.split(", ")
+                    for item in d_cont_list:
+                        item = item.split(": ")
+                        cmd_arg = arg + ' ' + id + \
+                            ' ' + item[0] + ' ' + item[1]
+                        HBNBCommand.do_update(self, cmd_arg)
+                else:
+                    cmd = cmd.replace("'", "").replace('"', '')
+                    cmd_l = cmd.split(", ")
+                    cmd_arg = arg + ' ' + id + ' ' + cmd_l[1] + ' ' + cmd_l[2]
+                    HBNBCommand.do_update(self, cmd_arg)
+            else:
+                print("*** Unknown syntax: {}".format(line))
+        except IndexError:
+            print("*** Unknown syntax: {}".format(line))
 
 
     def do_EOF(self, line):
