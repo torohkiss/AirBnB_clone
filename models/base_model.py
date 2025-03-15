@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""BaseModel class that defines all common attributes/methods for other classes"""
+"""BaseModel class that defines common attributes/methods for other classes"""
 
 
 import uuid
@@ -14,8 +14,13 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
+<<<<<<< HEAD
                 if key in ('created_at', 'updated_at'):
                     value = datetime.toisoformat(value)
+=======
+                if key in ['created_at', 'updated_at']:
+                    value = datetime.fromisoformat(value)
+>>>>>>> 2c04e01d76c752fb3929b7cc3a257b39b2552c1f
                 setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
@@ -23,12 +28,24 @@ class BaseModel:
             self.updated_at = self.created_at
 
     def __str__(self):
+<<<<<<< HEAD
          return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
          self.updated_at = datetime.now()
         
     def to_dict(self):
+=======
+        """returns string representation"""
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+
+    def save(self):
+        """The save method"""
+        self.updated_at = datetime.now()
+
+    def to_dict(self):
+        """returns dictionary representation"""
+>>>>>>> 2c04e01d76c752fb3929b7cc3a257b39b2552c1f
         new_dict = self.__dict__.copy()
         new_dict['__class__'] = self.__class__.__name__
         new_dict['created_at'] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
