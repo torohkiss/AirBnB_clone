@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import json
 import os
-from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -26,10 +25,12 @@ class FileStorage:
             json.dump(new_dict, file)
 
     def reload(self):
-        classes = {
-                'BaseModel': BaseModel,
-                }
         try:
+            from models.base_model import BaseModel
+            classes = {
+                    'BaseModel': BaseModel,
+                    }
+
             if os.path.isfile(self.__file_path):
                 with open(self.__file_path, 'r') as file:
                     obj_dict = json.load(file)
