@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""The console cmd module"""
+
+
 import cmd
 
 class HBNBCommand(cmd.Cmd):
