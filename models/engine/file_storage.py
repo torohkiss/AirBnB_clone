@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import json
 import os
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -25,11 +26,17 @@ class FileStorage:
             json.dump(new_dict, file)
 
     def reload(self):
+        classes = {
+                'BaseModel': BaseModel,
+                }
         try:
             if os.path.isfile(self.__file_path):
                 with open(self.__file_path, 'r') as file:
-                    loaded_dict = json.load(file)
-                    self.__objects = loaded_dict
+                    obj_dict = json.load(file)
+                    for key, value in obj_dict.items():
+                        class_name = value["__class__"]
+                        if class_name in classes:
+                            self.__objects[key] = classes[class_name](**value)
         except Exception:
             pass
 
