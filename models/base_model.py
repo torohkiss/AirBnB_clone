@@ -12,10 +12,11 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         if kwargs:
             for key, value in kwargs.items():
-                if key != '__class__':
-                    if key in ['created_at', 'updated_at']:
-                        value = datetime.fromisoformat(value)
-                    setattr(self, key, value)
+                if key == '__class__':
+                    continue
+                if key in ['created_at', 'updated_at']:
+                    value = datetime.fromisoformat(value)
+                setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -26,6 +27,7 @@ class BaseModel:
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
+        """The save method"""
         self.updated_at = datetime.now()
 
     def to_dict(self):
