@@ -4,6 +4,7 @@
 
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -11,6 +12,11 @@ class HBNBCommand(cmd.Cmd):
     """The console comand interpreter"""
 
     prompt = "(hbnb) "
+
+    available_classes = {
+        'BaseModel': BaseModel,
+        'User': User,
+    }
 
     def do_create(self, line):
         """creates a class instance"""
@@ -21,15 +27,11 @@ class HBNBCommand(cmd.Cmd):
 
         class_name = args[0]
 
-        available_classes = {
-                'BaseModel': BaseModel,
-                }
-
-        if class_name not in available_classes:
+        if class_name not in self.available_classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = BaseModel()
+        new_instance = self.available_classes[class_name]()
         new_instance.save()
         print(new_instance.id)
 
@@ -41,8 +43,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name == "BaseModel":
-            new_instance = BaseModel()
+        if class_name in self.available_classes:
+            new_instance = self.available_classes[class_name]()
         else:
             print("** class doesn't exist **")
             return
@@ -71,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name != "BaseModel":
+        if class_name != self.available_classes:
             print("** class doesn't exist **")
             return
 
@@ -103,7 +105,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name != 'BaseModel':
+        if class_name not in self.available_classes:
             print("** class doesn't exist **")
             return
 
@@ -125,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name != 'BaseModel':
+        if class_name not in self.available_classes:
             print("** class doesn't exist **")
             return
 

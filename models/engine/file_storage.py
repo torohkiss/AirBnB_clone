@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import json
 import os
+from models.user import User
 
 
 class FileStorage:
@@ -27,8 +28,10 @@ class FileStorage:
     def reload(self):
         try:
             from models.base_model import BaseModel
+            from models.user import User
             classes = {
                     'BaseModel': BaseModel,
+                    'User': User,
                     }
 
             if os.path.isfile(self.__file_path):
