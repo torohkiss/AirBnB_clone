@@ -39,9 +39,8 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        class_name = args[0]
-        instance_id = args[1]
 
+        class_name = args[0]
         if class_name == "BaseModel":
             new_instance = BaseModel()
         else:
@@ -52,6 +51,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
+        instance_id = args[1]
         all_objects = storage.all()
         key = f"{class_name}.{instance_id}"
         if key not in all_objects:
@@ -107,11 +107,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        for key, values in all_objects.items():
+        for key, obj in all_objects.items():
             if key.split('.')[0] == class_name:
                 result.append(str(obj))
-            print(result)
-            return
+        print(result)
+        return
     
     def do_update(self, line):
         """ Updates an instance based on the class name
@@ -149,8 +149,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         obj = all_objects[key]
-        attr_name = arg[2]
-        attr_value = arg[3]
+        attr_name = args[2]
+        attr_value = args[3]
 
         if attr_name in ["id", "created_at", "updated_at"]:
             return
