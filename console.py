@@ -43,9 +43,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name in self.available_classes:
-            new_instance = self.available_classes[class_name]()
-        else:
+        if class_name not in self.available_classes:
             print("** class doesn't exist **")
             return
 
@@ -73,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name != self.available_classes:
+        if class_name not in self.available_classes:
             print("** class doesn't exist **")
             return
 
